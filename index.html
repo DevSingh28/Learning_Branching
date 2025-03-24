@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"> 
-
 </head>
 <body>
     
@@ -21,12 +20,30 @@
   </form>
 
   <div class="drops">
-    <div class="drop drop-1"></div>
-    <div class="drop drop-2"></div>
-    <div class="drop drop-3"></div>
-    <div class="drop drop-4"></div>
-    <div class="drop drop-5"></div>
+    <div class="drop drop-1" style="background-color: aqua;"></div>
+    <div class="drop drop-2" style="background-color: pink;"></div>
+    <div class="drop drop-3" style="background-color: rgb(121, 202, 16);"></div>
+    <div class="drop drop-4" style="background-color: rgb(207, 123, 27);"></div>
+    <div class="drop drop-5" style="background-color: rgb(10, 248, 137);"></div>
   </div>
 </div>
+
+<script>
+  function randomMovement() {
+    const drops = document.querySelectorAll(".drop");
+
+    drops.forEach(drop => {
+      let x = Math.random() * 40 - 20;
+      let y = Math.random() * 40 - 20;
+
+      drop.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    setTimeout(randomMovement, 2000);
+  }
+
+  document.addEventListener("DOMContentLoaded", randomMovement);
+</script>
+
 </body>
 </html>

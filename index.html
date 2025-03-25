@@ -16,15 +16,44 @@
         <p>Login to your account</p>
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Password">
-        <button type="submit" id="diki">Sign In</button>
-        <p id="errorMessage" class="error-message"></p>
+        <div class="strength-meter">
+            <span id="strengthText">Enter Password</span>
+            <div id="strengthBar"></div>
+        </div>
+        <button type="submit">Sign In</button>
+        <p id="errorMessage"></p>
         <a href="#">Forgot Password?</a>
     </form>
 </div>
 
 <script>
+    document.getElementById("password").addEventListener("input", function() {
+        let password = this.value;
+        let strengthText = document.getElementById("strengthText");
+        let strengthBar = document.getElementById("strengthBar");
+        
+        if (password.length === 0) {
+            strengthText.textContent = "Enter Password";
+            strengthBar.style.width = "0";
+            strengthBar.style.backgroundColor = "transparent";
+            return;
+        }
+
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        let colors = ["red", "orange", "yellow", "green"];
+        let texts = ["Weak", "Medium", "Good", "Strong"];
+        strengthText.textContent = texts[strength - 1] || "Weak";
+        strengthBar.style.width = `${strength * 25}%`;
+        strengthBar.style.backgroundColor = colors[strength - 1] || "red";
+    });
+
     document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         let email = document.getElementById("email").value.trim();
         let password = document.getElementById("password").value.trim();
@@ -42,7 +71,85 @@
 </script>
 
 <style>
-    .error-message {
+    body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        width: 320px;
+        box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        color: #fff;
+    }
+
+    p {
+        color: #ddd;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #ff7eb3;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #ff4a88;
+    }
+
+    a {
+        display: block;
+        margin-top: 10px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .strength-meter {
+        margin-top: 10px;
+        text-align: left;
+        font-size: 0.9rem;
+        color: white;
+    }
+
+    #strengthBar {
+        height: 5px;
+        width: 0;
+        background: red;
+        border-radius: 5px;
+        transition: 0.4s;
+    }
+
+    #errorMessage {
         color: red;
         font-size: 14px;
         margin-top: 10px;
